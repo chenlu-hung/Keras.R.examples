@@ -1,0 +1,11 @@
+library(keras)
+use_condaenv("r-tensorflow",conda=your.path.conda)
+x <- 0:100
+y <- 5 + 5*x^0.5 - 1.2*x^0.7 + rnorm(length(x), 0, 1)
+model <- keras_model_sequential()
+layer_dense(model,units=20,activation='relu',input_shape=c(1))
+layer_dense(model,units=1,activation='linear',kernel_regularizer=regularizer_l2(l=0))
+compile(model,loss="mean_squared_error",optimizer="nadam",metric="mean_squared_error")
+history <- fit(model,x,y,epochs=500,verbose=0,validation_split=0.1)
+plot(x,y)
+points(x,predict(model,x),type="l")
